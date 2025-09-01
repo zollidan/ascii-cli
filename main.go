@@ -17,7 +17,7 @@ import (
 )
 
 var (
-	filePath = flag.String("file", "", "Путь к изображению (png/jpg/gif/webp)")
+	filePath = flag.String("file", "", "Путь к изображению (png/jpg/gif)")
 	width    = flag.Int("width", 100, "Ширина ASCII в символах")
 	color    = flag.Bool("color", true, "Цветной вывод в терминал (ANSI 24-bit)")
 	markdown = flag.Bool("markdown", false, "Вывод в формате Markdown (без цветов)")
