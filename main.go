@@ -20,6 +20,7 @@ var (
 	filePath = flag.String("file", "", "Путь к изображению (png/jpg/gif/webp)")
 	width    = flag.Int("width", 100, "Ширина ASCII в символах")
 	color    = flag.Bool("color", true, "Цветной вывод в терминал (ANSI 24-bit)")
+	bw       = flag.Bool("bw", false, "Черно-белый вывод (# и пробел)")
 	markdown = flag.Bool("markdown", false, "Вывод в формате Markdown (без цветов)")
 	outFile  = flag.String("out", "", "Сохранить вывод в файл (например, README.md)")
 	fps      = flag.Int("fps", 0, "FPS для GIF (0 = использовать задержки из GIF)")
@@ -38,7 +39,7 @@ func clamp[T ~int | ~float64](v, lo, hi T) T {
 	return v
 }
 
-func toASCII(img image.Image, targetWidth int, useColor bool) []string {
+func toASCII(img image.Image, targetWidth int, useColor bool, useBW bool) []string {
 	b := img.Bounds()
 	w := b.Dx()
 	h := b.Dy()
@@ -67,8 +68,17 @@ func toASCII(img image.Image, targetWidth int, useColor bool) []string {
 			b8 := uint8(b >> 8)
 
 			gray := 0.299*float64(r8) + 0.587*float64(g8) + 0.114*float64(b8)
-			idx := int((gray / 255.0) * float64(len(grayRamp)-1))
-			ch := grayRamp[idx]
+			var ch byte
+			if useBW {
+				if gray > 127 {
+					ch = ' '
+				} else {
+					ch = '#'
+				}
+			} else {
+				idx := int((gray / 255.0) * float64(len(grayRamp)-1))
+				ch = grayRamp[idx]
+			}
 
 			if useColor {
 				// 24-bit цвет в терминале
@@ -183,13 +193,13 @@ func main() {
 	}
 
 	// Режим Markdown всегда без цвета
-	useColor := *color && !*markdown
+	useColor := *color && !*markdown && !*bw
 
 	if isGIF && len(g.Image) > 1 {
 		// Анимированный GIF
 		framesASCII := make([][]string, len(g.Image))
 		for i, palImg := range g.Image {
-			framesASCII[i] = toASCII(palImg, *width, useColor)
+			framesASCII[i] = toASCII(palImg, *width, useColor, *bw)
 		}
 
 		if *markdown || *outFile != "" {
@@ -246,7 +256,7 @@ func main() {
 		fmt.Println("Ошибка декодирования изображения:", err)
 		os.Exit(1)
 	}
-	lines := toASCII(img, *width, useColor)
+	lines := toASCII(img, *width, useColor, *bw)
 
 	if *outFile != "" {
 		if err := writeOutput(lines, *markdown, *outFile); err != nil {
