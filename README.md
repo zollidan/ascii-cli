@@ -1,4 +1,3 @@
-````markdown
 # 🖼️ ASCII Art Generator на Go
 
 Консольная утилита для преобразования изображений и GIF-анимаций в цветной ASCII-арт.
@@ -13,7 +12,6 @@ git clone https://github.com/yourname/ascii-art-go.git
 cd ascii-art-go
 go build -o ascii-art .
 ```
-````
 
 ---
 
@@ -47,14 +45,12 @@ go build -o ascii-art .
 
 В `README_snippet.md` появится блок:
 
-````markdown
-```
+```text
   .:-=+*#%@
    :-=+*#%@
     =+*#%@
      *#%@
 ```
-````
 
 ### 4. Черно-белый ASCII (# и пробел)
 
