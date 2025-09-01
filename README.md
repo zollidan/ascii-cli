@@ -8,10 +8,10 @@
 ## 🚀 Установка
 
 ```bash
-git clone https://github.com/yourname/ascii-art-go.git
-cd ascii-art-go
-go build -o ascii-art .
+go install github.com/zollidan/ascii-cli@latest
 ```
+
+Бинарник `ascii-cli` появится в `$GOBIN` (или `~/go/bin`). Убедись, что эта папка в `$PATH`.
 
 ---
 
@@ -22,25 +22,25 @@ go build -o ascii-art .
 ### 1. Статичное изображение в терминале (цветом)
 
 ```bash
-./ascii-art -file image.png -width 120
+ascii-cli -file image.png -width 120
 ```
 
 ### 2. Анимированный GIF — бесконечная прокрутка в терминале
 
 ```bash
-./ascii-art -file cat.gif -width 90 -loop=true
+ascii-cli -file cat.gif -width 90 -loop=true
 ```
 
 С фиксированным FPS:
 
 ```bash
-./ascii-art -file cat.gif -width 90 -fps 12
+ascii-cli -file cat.gif -width 90 -fps 12
 ```
 
 ### 3. Генерация ASCII для GitHub (Markdown)
 
 ```bash
-./ascii-art -file image.png -width 100 -markdown -out README_snippet.md
+ascii-cli -file image.png -width 100 -markdown -out README_snippet.md
 ```
 
 В `README_snippet.md` появится блок:
@@ -52,20 +52,13 @@ go build -o ascii-art .
      *#%@
 ```
 
-### 4. Черно-белый ASCII (# и пробел)
-
-```bash
-./ascii-art -file image.png -width 100 -bw
-```
-
-### 5. Ключи
+### 4. Ключи
 
 | Флаг        | Описание                                       |
 | ----------- | ---------------------------------------------- |
 | `-file`     | путь к файлу (png/jpg/gif)                     |
 | `-width`    | ширина ASCII (по умолчанию 100)                |
 | `-color`    | цветной вывод ANSI (true/false)                |
-| `-bw`       | черно-белый вывод (# и пробел)                 |
 | `-markdown` | режим Markdown (удаляет ANSI цвета)            |
 | `-out`      | сохранить результат в файл                     |
 | `-fps`      | FPS для GIF (0 = использовать задержки из GIF) |
@@ -85,4 +78,3 @@ go build -o ascii-art .
 - ✅ Поддержка анимированных GIF
 - ✅ Экспорт в Markdown для README
 - ✅ Настройка ширины и FPS
-- ✅ Черно-белый режим (# и пробел)
